@@ -1,0 +1,18 @@
+# defaults
+.thumbs.db
+.DS_Store
+
+# local env files
+.env.local
+.env.*.local
+**/__pycache__
+**/.venv
+
+# Editor directories and files
+**/.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

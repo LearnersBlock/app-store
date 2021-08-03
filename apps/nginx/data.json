@@ -1,0 +1,22 @@
+{
+  "nginx": {
+    "long_name": "Nginx",
+    "image": "nginx:1.21.1-alpine",
+    "ports": {
+      "80": 1111
+    },
+    "volumes": {
+      "nginx-data": {
+        "bind": "/data",
+        "mode": "rw"
+      }
+    },
+    "version": "1.21.1",
+    "author_site": "nginx.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/nginx/assets/nginx.png",
+    "repo": {
+      "name": "",
+      "strings": {}
+    }
+  }
+}
