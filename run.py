@@ -3,6 +3,7 @@ import json
 import os
 import requests
 import subprocess
+from time import sleep
 
 apps_path = './apps/'
 
@@ -12,7 +13,7 @@ class repos():
     def pypi(repo_strings):
         version = parse('0')
 
-        response = requests.get(repo_strings['url']).json()
+        response = requests.get(repo_strings['url'], timeout=10).json()
         for release in response['releases']:
             if parse(release) > version and not parse(release).is_prerelease:
                 version = parse(release)
@@ -21,14 +22,27 @@ class repos():
 
 def build(name):
     print('Starting build for ' + name + '. This could take some time.')
+
+    # Create required cache directories
+    try:
+        os.makedirs('/tmp/.buildx-cache/' + name)
+        os.makedirs('/tmp/.buildx-cache-new/' + name)
+    except Exception:
+        # Folder already exists. Continuing.
+        pass
+
     # Build Docker Command and Deploy
     docker_build_command = ('docker buildx build '
                             '--push '
-                            '--platform '
-                            'linux/amd64,linux/arm64,'
-                            'linux/ppc64le,linux/s390x,linux/386,'
-                            'linux/arm/v7,'
-                            'linux/arm/v6 '
+                            '--cache-from=type=local,src=/tmp/.buildx-cache/'
+                            + name +
+                            ' --cache-to=type=local,mode=max,dest=/tmp/'
+                            '.buildx-cache-new/'
+                            + name +
+                            ' --platform '
+                            'linux/amd64,'
+                            'linux/arm64,'
+                            'linux/arm/v7 '
                             '--tag ghcr.io/learnersblock/' + name.lower() +
                             ':latest '
                             './apps/' + name.lower())
@@ -39,14 +53,20 @@ def build(name):
                               stderr=subprocess.STDOUT,
                               text=True)
 
-    output.wait()
-
     # Print the log output
-    print(output.communicate()[0].rstrip())
+    while stream_process(output):
+        sleep(0.1)
 
     # Check if process completed ok and if not exit 1
     if (output.returncode != 0):
         raise Exception('Non-zero return code')
+
+
+def stream_process(process):
+    go = process.poll() is None
+    for line in process.stdout:
+        print(line)
+    return go
 
 
 if __name__ == '__main__':
@@ -92,7 +112,9 @@ if __name__ == '__main__':
 
                 # Call function based on apps repo
                 if repo_call == 'pypi':
-                    latest_version = repos.pypi(json_data[i]["repo"]["strings"])
+                    latest_version = repos.pypi(json_data[i]
+                                                ["repo"]
+                                                ["strings"])
                 #                          #
                 # else if:                 #
                 # Add more repo types here #
