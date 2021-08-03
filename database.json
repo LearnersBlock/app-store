@@ -1,0 +1,44 @@
+{
+  "kolibri": {
+    "long_name": "Kolibri",
+    "image": "ghcr.io/learnersblock/kolibri:latest",
+    "ports": {
+      "8080": 1212
+    },
+    "volumes": {
+      "kolibri_home": {
+        "bind": "/root/.kolibri",
+        "mode": "rw"
+      }
+    },
+    "version": "0.0.1.dev20160531112859",
+    "author_site": "learningequality.org/kolibri/",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
+    "repo": {
+      "name": "pypi",
+      "strings": {
+        "url": "https://pypi.org/pypi/kolibri/json"
+      }
+    }
+  },
+  "nginx": {
+    "long_name": "Nginx",
+    "image": "nginx:1.21.1-alpine",
+    "ports": {
+      "80": 1111
+    },
+    "volumes": {
+      "nginx-data": {
+        "bind": "/data",
+        "mode": "rw"
+      }
+    },
+    "version": "1.21.1",
+    "author_site": "nginx.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/nginx/assets/nginx.png",
+    "repo": {
+      "name": "",
+      "strings": {}
+    }
+  }
+}
