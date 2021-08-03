@@ -13,9 +13,8 @@ class repos():
 
         response = requests.get(repo_strings['url']).json()
         for release in response['releases']:
-            if parse(release) > version and not version.is_prerelease:
+            if parse(release) > version and not parse(release).is_prerelease:
                 version = parse(release)
-
         return version
 
 
@@ -92,6 +91,7 @@ if __name__ == '__main__':
             else:
                 raise Exception('Not a recognised repo')
 
+            print(parse(json_data[i]["version"]))
             # Check if it's a new version or a new entry
             if latest_version > parse(json_data[i]["version"]) or \
                     existing_entry is False:
