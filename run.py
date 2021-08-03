@@ -75,39 +75,44 @@ if __name__ == '__main__':
             # Set vars
             existing_entry = False
 
-            # Check to see if there are version fetching steps, if not skip
-            if not json_data[i]["repo"]["name"]:
-                continue
-
             # See if it is a new entry for the database
             for item in json_database:
                 if i == item:
                     existing_entry = True
 
-            # Fetch the latest version from it's repo
-            repo_call = json_data[i]["repo"]["name"].lower()
+            # If it is not an existing entry, build it, then move on
+            if existing_entry is False:
+                build(i)
+                continue
 
-            if repo_call == 'pypi':
-                latest_version = repos.pypi(json_data[i]["repo"]["strings"])
-            #                          #
-            # Add more repo types here #
-            #                          #
-            else:
-                raise Exception('Not a recognised repo')
+            # Check if repo details exist for auto updates
+            if json_data[i]["repo"]["name"]:
+                # Store repo name
+                repo_call = json_data[i]["repo"]["name"].lower()
 
-            # Check if it's a new version or a new entry
-            if latest_version > parse(json_data[i]["version"]) or \
-                    existing_entry is False:
-                # Build Docker image and deploy if it's a LB image
-                if json_data[i]["image"][:21] == 'ghcr.io/learnersblock':
-                    build(i)
+                # Call function based on apps repo
+                if repo_call == 'pypi':
+                    latest_version = repos.pypi(json_data[i]["repo"]["strings"])
+                #                          #
+                # else if:                 #
+                # Add more repo types here #
+                #                          #
+                else:
+                    # Raise an error if the repo details are wrong
+                    raise ('Not a recognised repo')
 
-                # Update app's JSON file with the new version
-                json_data[i]["version"] = str(latest_version)
+                # Check if it's a new version or a new entry
+                if latest_version > parse(json_data[i]["version"]):
+                    # Build Docker image and deploy if it's a LB image
+                    if json_data[i]["image"][:21] == 'ghcr.io/learnersblock':
+                        build(i)
 
-                # Write the app's JSON file
-                with open(full_file_path, 'w') as jsonFile:
-                    json.dump(json_data, jsonFile, indent=2)
+                    # Update app's JSON file with the new version
+                    json_data[i]["version"] = str(latest_version)
+
+                    # Write the app's JSON file
+                    with open(full_file_path, 'w') as jsonFile:
+                        json.dump(json_data, jsonFile, indent=2)
 
             # End the loop as only one entry to be processed per file
             break
