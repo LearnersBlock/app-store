@@ -1,4 +1,19 @@
 {
+  "free-math": {
+    "long_name": "Free-Math",
+    "image": "ghcr.io/learnersblock/free-math:latest",
+    "ports": {
+      "80": 1313
+    },
+    "volumes": {},
+    "version": "0",
+    "author_site": "freemathapp.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/free-math/assets/free-math-logo.png",
+    "repo": {
+      "name": "",
+      "strings": {}
+    }
+  },
   "kolibri": {
     "long_name": "Kolibri",
     "image": "ghcr.io/learnersblock/kolibri:latest",
@@ -19,26 +34,6 @@
       "strings": {
         "url": "https://pypi.org/pypi/kolibri/json"
       }
-    }
-  },
-  "nginx": {
-    "long_name": "Nginx",
-    "image": "nginx:1.21.1-alpine",
-    "ports": {
-      "80": 1111
-    },
-    "volumes": {
-      "nginx-data": {
-        "bind": "/data",
-        "mode": "rw"
-      }
-    },
-    "version": "1.21.1",
-    "author_site": "nginx.org",
-    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/nginx/assets/nginx.png",
-    "repo": {
-      "name": "",
-      "strings": {}
     }
   }
 }
