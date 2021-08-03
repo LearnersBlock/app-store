@@ -45,6 +45,6 @@ jobs:
         with:
           author_name: Learner's Block
           author_email: 41898282+github-actions[bot]@users.noreply.github.com
-          message: 'Update database file'
+          message: 'Update database files'
           branch: main
-          add: './database.json'
+          add: '*.json'

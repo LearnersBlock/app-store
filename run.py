@@ -8,6 +8,7 @@ apps_path = './apps/'
 
 
 class repos():
+    # Group of repos for fetching version number
     def pypi(repo_strings):
         version = parse('0')
 
@@ -51,7 +52,10 @@ def build(name):
 if __name__ == '__main__':
     print('Running run.py')
 
+    # Set vars
     database = {}
+
+    # Fetch and store main database file as var
     try:
         with open('./database.json', 'r') as jsonFile:
             json_database = json.loads(jsonFile.read())
@@ -68,19 +72,19 @@ if __name__ == '__main__':
 
         # Work with first JSON object which will be the app name
         for i in json_data:
-            # Set variables
+            # Set vars
             existing_entry = False
+
+            # Check to see if there are version fetching steps, if not skip
+            if not json_data[i]["repo"]["name"]:
+                continue
 
             # See if it is a new entry for the database
             for item in json_database:
                 if i == item:
                     existing_entry = True
 
-            # Check to see if there are build steps required and if not skip
-            if not json_data[i]["repo"]["name"]:
-                continue
-
-            # Fetch the latest version for it's repo
+            # Fetch the latest version from it's repo
             repo_call = json_data[i]["repo"]["name"].lower()
 
             if repo_call == 'pypi':
@@ -91,12 +95,12 @@ if __name__ == '__main__':
             else:
                 raise Exception('Not a recognised repo')
 
-            print(parse(json_data[i]["version"]))
             # Check if it's a new version or a new entry
             if latest_version > parse(json_data[i]["version"]) or \
                     existing_entry is False:
-                # Build Docker image and deploy
-                build(i)
+                # Build Docker image and deploy if it's a LB image
+                if json_data[i]["image"][:21] == 'ghcr.io/learnersblock':
+                    build(i)
 
                 # Update app's JSON file with the new version
                 json_data[i]["version"] = str(latest_version)
