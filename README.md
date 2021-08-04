@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository provides the Docker images used for the Learner's Block App Store. 
+This repository provides the Docker images used for the [Learner's Block](https://learnersblock.org) App Store. 
 
 ## Feature requests
 

@@ -2,6 +2,7 @@ from packaging.version import parse
 import json
 import os
 import requests
+import shutil
 import subprocess
 from time import sleep
 
@@ -23,10 +24,14 @@ class repos():
 def build(name):
     print('Starting build for ' + name + '. This could take some time.')
 
+    # Set vars
+    cache_from = '/tmp/.buildx-cache/' + name
+    cache_to = '/tmp/.buildx-cache-new/' + name
+
     # Create required cache directories
     try:
-        os.makedirs('/tmp/.buildx-cache/' + name)
-        os.makedirs('/tmp/.buildx-cache-new/' + name)
+        os.makedirs(cache_from)
+        os.makedirs(cache_to)
     except Exception:
         # Folder already exists. Continuing.
         pass
@@ -34,16 +39,16 @@ def build(name):
     # Build Docker Command and Deploy
     docker_build_command = ('docker buildx build '
                             '--push '
-                            '--cache-from=type=local,src=/tmp/.buildx-cache/'
-                            + name +
-                            ' --cache-to=type=local,mode=max,dest=/tmp/'
-                            '.buildx-cache-new/'
-                            + name +
+                            '--cache-from=type=local,src=' + cache_from +
+                            ' --cache-to=type=local,mode=max,dest=' +
+                            cache_to +
                             ' --platform '
                             'linux/amd64,'
                             'linux/arm64,'
                             'linux/arm/v7 '
                             '--tag ghcr.io/learnersblock/' + name.lower() +
+                            ':latest '
+                            '--tag learnersblock/' + name.lower() +
                             ':latest '
                             './apps/' + name.lower())
 
@@ -60,6 +65,14 @@ def build(name):
     # Check if process completed ok and if not exit 1
     if (output.returncode != 0):
         raise Exception('Non-zero return code')
+
+    # Check cache exists and move into place
+    if os.path.exists(cache_to) and any(os.scandir(cache_to)):
+        try:
+            shutil.rmtree(cache_from)
+        except Exception():
+            print('No existing cache to clear. Continuing...')
+        shutil.move(cache_to, cache_from)
 
 
 def stream_process(process):
