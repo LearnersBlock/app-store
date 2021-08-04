@@ -51,7 +51,7 @@ jobs:
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache || echo 'no build cache to copy'
       - name: Commit database file
         uses: EndBug/add-and-commit@v7.2.1
         with:
