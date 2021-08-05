@@ -1,6 +1,9 @@
 {
   "free-math": {
     "long_name": "Free-Math",
+    "env_vars": {
+      "variable1": "variable"
+    },
     "image": "ghcr.io/learnersblock/free-math:latest",
     "ports": {
       "80": 1313
@@ -16,6 +19,9 @@
   },
   "kolibri": {
     "long_name": "Kolibri",
+    "env_vars": {
+      "variable1": "variable"
+    },
     "image": "ghcr.io/learnersblock/kolibri:latest",
     "ports": {
       "8080": 1212
