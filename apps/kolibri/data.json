@@ -1,6 +1,9 @@
 {
   "kolibri": {
     "long_name": "Kolibri",
+    "env_vars": {
+      "variable1": "variable"
+    },
     "image": "ghcr.io/learnersblock/kolibri:latest",
     "ports": {
       "8080": 1212
