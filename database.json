@@ -18,7 +18,7 @@
   "kolibri": {
     "long_name": "Kolibri",
     "env_vars": {
-      "variable1": "variable"
+      "test": "test1"
     },
     "image": "ghcr.io/learnersblock/kolibri:latest",
     "ports": {
@@ -28,6 +28,23 @@
       "kolibri_home": {
         "bind": "/root/.kolibri",
         "mode": "rw"
+      }
+    },
+    "dependencies": {
+      "mysql": {
+        "env_vars": {
+          "variable1": "variable"
+        },
+        "image": "docker.io/bitnami/mariadb:10.5",
+        "ports": {
+          "8080": 1515
+        },
+        "volumes": {
+          "kol_dependecy": {
+            "bind": "/root/.dep",
+            "mode": "rw"
+          }
+        }
       }
     },
     "version": "0.14.7",
