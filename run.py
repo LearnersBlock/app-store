@@ -1,10 +1,10 @@
 from packaging.version import parse
+from time import sleep
 import json
 import os
 import requests
 import shutil
 import subprocess
-from time import sleep
 
 apps_path = './apps/'
 
@@ -28,12 +28,16 @@ def build(name):
     cache_from = '/tmp/.buildx-cache/' + name
     cache_to = '/tmp/.buildx-cache-new/' + name
 
-    # Create required cache directories
+    # Create required cache directories in case not there
     try:
         os.makedirs(cache_from)
+    except Exception:
+        # cache_from folder already exists. Continuing.
+        pass
+    try:
         os.makedirs(cache_to)
     except Exception:
-        # Folder already exists. Continuing.
+        # cache_to folder already exists. Continuing.
         pass
 
     # Build Docker Command and Deploy
@@ -67,11 +71,8 @@ def build(name):
         raise Exception('Non-zero return code')
 
     # Check cache exists and move into place
-    if os.path.exists(cache_to) and any(os.scandir(cache_to)):
-        try:
-            shutil.rmtree(cache_from)
-        except Exception():
-            print('No existing cache to clear. Continuing...')
+    if any(os.scandir(cache_to)):
+        shutil.rmtree(cache_from)
         shutil.move(cache_to, cache_from)
 
 
