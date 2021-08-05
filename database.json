@@ -1,1 +1,39 @@
-{}
+{
+  "free-math": {
+    "long_name": "Free-Math",
+    "image": "ghcr.io/learnersblock/free-math:latest",
+    "ports": {
+      "80": 1313
+    },
+    "volumes": {},
+    "version": "0",
+    "author_site": "freemathapp.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/free-math/assets/free-math-logo.png",
+    "repo": {
+      "name": "",
+      "strings": {}
+    }
+  },
+  "kolibri": {
+    "long_name": "Kolibri",
+    "image": "ghcr.io/learnersblock/kolibri:latest",
+    "ports": {
+      "8080": 1212
+    },
+    "volumes": {
+      "kolibri_home": {
+        "bind": "/root/.kolibri",
+        "mode": "rw"
+      }
+    },
+    "version": "0.14.7",
+    "author_site": "learningequality.org/kolibri/",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
+    "repo": {
+      "name": "pypi",
+      "strings": {
+        "url": "https://pypi.org/pypi/kolibri/json"
+      }
+    }
+  }
+}
