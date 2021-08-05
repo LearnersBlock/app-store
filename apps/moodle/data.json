@@ -1,0 +1,53 @@
+{
+  "moodle": {
+    "long_name": "Moodle",
+    "env_vars": {
+      "MOODLE_DATABASE_HOST": "mariadb-moodle",
+      "MOODLE_DATABASE_PORT_NUMBER": "3306",
+      "MOODLE_DATABASE_USER": "bn_moodle",
+      "MOODLE_DATABASE_NAME": "bitnami_moodle",
+      "ALLOW_EMPTY_PASSWORD": "yes"
+    },
+    "image": "docker.io/bitnami/moodle:3",
+    "ports": {
+      "80": 8442,
+      "443": 8443
+    },
+    "volumes": {
+      "moodle_data": {
+        "bind": "/bitnami/moodle",
+        "mode": "rw"
+      },
+      "moodledata_data": {
+        "bind": "/bitnami/moodledata/moodle",
+        "mode": "rw"
+      }
+    },
+    "dependencies": {
+      "mariadb-moodle": {
+        "env_vars": {
+          "MARIADB_CHARACTER_SET": "utf8mb4",
+          "MARIADB_COLLATE": "utf8mb4_unicode_ci",
+          "MARIADB_USER": "bn_moodle",
+          "MARIADB_DATABASE": "bitnami_moodle",
+          "ALLOW_EMPTY_PASSWORD": "yes"
+        },
+        "image": "docker.io/bitnami/mariadb:10.5",
+        "ports": {},
+        "volumes": {
+          "mariadb_data": {
+            "bind": "/bitnami/mariadb",
+            "mode": "rw"
+          }
+        }
+      }
+    },
+    "version": "3.11.2",
+    "author_site": "https://moodle.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/moodle/assets/moodle-logo.png",
+    "repo": {
+      "name": "",
+      "strings": {}
+    }
+  }
+}
