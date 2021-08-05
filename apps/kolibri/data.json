@@ -1,6 +1,7 @@
 {
   "kolibri": {
     "long_name": "Kolibri",
+    "env_vars": {},
     "image": "ghcr.io/learnersblock/kolibri:latest",
     "ports": {
       "8080": 1212
@@ -11,6 +12,7 @@
         "mode": "rw"
       }
     },
+    "dependencies": {},
     "version": "0.14.7",
     "author_site": "learningequality.org/kolibri/",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
