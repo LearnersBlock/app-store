@@ -8,12 +8,14 @@
     },
     "volumes": {},
     "dependencies": {},
-    "version": "0",
+    "version": "0.0.1",
     "author_site": "freemathapp.org",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/free-math/assets/free-math-logo.png",
     "repo": {
-      "name": "",
-      "strings": {}
+      "name": "gh_commits",
+      "strings": {
+        "url": "https://api.github.com/repos/jaltekruse/free-math/git/refs/heads/master"
+      }
     }
   }
 }

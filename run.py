@@ -3,21 +3,56 @@ from time import sleep
 import json
 import os
 import requests
+import semver
 import shutil
 import subprocess
 
 apps_path = './apps/'
 
 
+# Group of repos for fetching latest version number
 class repos():
-    # Group of repos for fetching version number
+    def gh_commits(repo_strings, current_version, app_folder):
+        # Fetch release versions
+        response = requests.get(repo_strings['url'], timeout=10).json()
+
+        # Read cached sha
+        try:
+            with open(app_folder + '/cache.json', 'r') as jsonFile:
+                cache = json.loads(jsonFile.read())
+        except Exception:
+            cache = json.loads({"sha": "0.0.1"})
+
+        # Check if new commit
+        if response['object']['sha'] != cache['sha']:
+            # Update and write new sha
+            cache["sha"] = response['object']['sha']
+
+            # Write new cache
+            with open(app_folder + '/cache.json', 'w') as jsonFile:
+                json.dump(cache, jsonFile, indent=2)
+
+            # Fetch the current version as semver object
+            new_version = semver.VersionInfo.parse(str(current_version))
+
+            # Return new version number as version object
+            return parse(str(new_version.bump_patch()))
+        else:
+            return parse(current_version)
+
     def pypi(repo_strings):
+        # Set vars
         version = parse('0')
 
+        # Fetch latest commit
         response = requests.get(repo_strings['url'], timeout=10).json()
+
+        # For each release in PyPi find the most recent
         for release in response['releases']:
             if parse(release) > version and not parse(release).is_prerelease:
                 version = parse(release)
+
+        # Return the most recent version
         return version
 
 
@@ -125,21 +160,28 @@ if __name__ == '__main__':
                 repo_call = json_data[i]["repo"]["name"].lower()
 
                 # Call function based on apps repo
-                if repo_call == 'pypi':
+                if repo_call == 'gh_commits':
+                    latest_version = repos.gh_commits(json_data[i]
+                                                      ["repo"]
+                                                      ["strings"],
+                                                      json_data[i]
+                                                      ["version"],
+                                                      apps_path + file_path)
+                elif repo_call == 'pypi':
                     latest_version = repos.pypi(json_data[i]
                                                 ["repo"]
                                                 ["strings"])
                 #                          #
-                # else if:                 #
+                # elif:                    #
                 # Add more repo types here #
                 #                          #
                 else:
                     # Raise an error if the repo details are wrong
                     raise ('Not a recognised repo')
 
-                # Check if it's a new version or a new entry
+                # Check if it is a new version or a new entry
                 if latest_version > parse(json_data[i]["version"]):
-                    # Build Docker image and deploy if it's a LB image
+                    # Build Docker image and deploy if it's an LB image
                     if json_data[i]["image"][:21] == 'ghcr.io/learnersblock':
                         build(i)
 
