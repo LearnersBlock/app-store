@@ -10,8 +10,9 @@ import subprocess
 apps_path = './apps/'
 
 
-# Group of repos for fetching latest version number
+# Repos for fetching latest version number
 class repos():
+    # Check for new commits on a GitHub repo
     def gh_commits(repo_strings, current_version, app_folder):
         # Fetch release versions
         response = requests.get(repo_strings['url'], timeout=10).json()
@@ -40,6 +41,7 @@ class repos():
         else:
             return parse(current_version)
 
+    # Check for new releases on PyPi.org
     def pypi(repo_strings):
         # Set vars
         version = parse('0')
@@ -98,7 +100,7 @@ def build(name):
                               text=True)
 
     # Print the log output
-    while stream_process(output):
+    while stream_progress(output):
         sleep(0.1)
 
     # Check if process completed ok and if not exit 1
@@ -111,15 +113,15 @@ def build(name):
         shutil.move(cache_to, cache_from)
 
 
-def stream_process(process):
-    go = process.poll() is None
-    for line in process.stdout:
+def stream_progress(progress):
+    go = progress.poll() is None
+    for line in progress.stdout:
         print(line)
     return go
 
 
 if __name__ == '__main__':
-    print('Running run.py')
+    print("Running Learner's Block App-Store Update.")
 
     # Set vars
     database = {}
@@ -140,35 +142,35 @@ if __name__ == '__main__':
             json_data = json.loads(readfile.read())
 
         # Work with first JSON object which will be the app name
-        for i in json_data:
+        for app_json_file in json_data:
             # Set vars
             existing_entry = False
 
             # See if it is a new entry for the database
             for item in json_database:
-                if i == item:
+                if app_json_file == item:
                     existing_entry = True
 
             # If it is not an existing entry, build it, then move on
             if existing_entry is False:
-                build(i)
+                build(app_json_file)
                 continue
 
             # Check if repo details exist for auto updates
-            if json_data[i]["repo"]["name"]:
+            if json_data[app_json_file]["repo"]["name"]:
                 # Store repo name
-                repo_call = json_data[i]["repo"]["name"].lower()
+                repo_call = json_data[app_json_file]["repo"]["name"].lower()
 
                 # Call function based on apps repo
                 if repo_call == 'gh_commits':
-                    latest_version = repos.gh_commits(json_data[i]
+                    latest_version = repos.gh_commits(json_data[app_json_file]
                                                       ["repo"]
                                                       ["strings"],
-                                                      json_data[i]
+                                                      json_data[app_json_file]
                                                       ["version"],
                                                       apps_path + file_path)
                 elif repo_call == 'pypi':
-                    latest_version = repos.pypi(json_data[i]
+                    latest_version = repos.pypi(json_data[app_json_file]
                                                 ["repo"]
                                                 ["strings"])
                 #                          #
@@ -180,13 +182,14 @@ if __name__ == '__main__':
                     raise ('Not a recognised repo')
 
                 # Check if it is a new version or a new entry
-                if latest_version > parse(json_data[i]["version"]):
+                if latest_version > parse(json_data[app_json_file]["version"]):
                     # Build Docker image and deploy if it's an LB image
-                    if json_data[i]["image"][:21] == 'ghcr.io/learnersblock':
-                        build(i)
+                    if (json_data[app_json_file]["image"][:21]
+                            == 'ghcr.io/learnersblock'):
+                        build(app_json_file)
 
                     # Update app's JSON file with the new version
-                    json_data[i]["version"] = str(latest_version)
+                    json_data[app_json_file]["version"] = str(latest_version)
 
                     # Write the app's JSON file
                     with open(full_file_path, 'w') as jsonFile:
@@ -200,3 +203,5 @@ if __name__ == '__main__':
     # Write the final database file
     with open('./database.json', 'w') as jsonFile:
         json.dump(database, jsonFile, indent=2)
+
+    print("Learner's Block App-Store Update update complete.")
