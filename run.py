@@ -204,4 +204,4 @@ if __name__ == '__main__':
     with open('./database.json', 'w') as jsonFile:
         json.dump(database, jsonFile, indent=2)
 
-    print("Learner's Block App-Store Update update complete.")
+    print("Learner's Block App-Store update complete.")
