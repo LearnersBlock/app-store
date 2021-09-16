@@ -4,6 +4,7 @@
     "env_vars": {
       "PUID": 1000,
       "PGID": 1000,
+      "APP_URL": "http://lb.local:6875",
       "DB_HOST": "bookstack_db",
       "DB_USER": "bookstack",
       "DB_PASS": "q@wkejd0i2hd1",
