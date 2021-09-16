@@ -4,6 +4,7 @@
     "env_vars": {
       "PUID": 1000,
       "PGID": 1000,
+      "APP_URL": "http://lb.local:6875",
       "DB_HOST": "bookstack_db",
       "DB_USER": "bookstack",
       "DB_PASS": "q@wkejd0i2hd1",
@@ -89,7 +90,7 @@
     "info": "",
     "dependencies": {},
     "version_name": "0.14.7",
-    "version": 1,
+    "version": 2,
     "author_site": "learningequality.org/kolibri/",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
     "repo": {
