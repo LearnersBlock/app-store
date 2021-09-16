@@ -3,7 +3,6 @@ from time import sleep
 import json
 import os
 import requests
-import semver
 import shutil
 import subprocess
 
@@ -13,16 +12,16 @@ apps_path = './apps/'
 # Repos for fetching latest version number
 class repos():
     # Check for new commits on a GitHub repo
-    def gh_commits(repo_strings, current_version, app_folder):
+    def gh_commits(repo_strings, current_version, cache_folder):
         # Fetch release versions
         response = requests.get(repo_strings['url'], timeout=10).json()
 
         # Read cached sha
         try:
-            with open(app_folder + '/cache.json', 'r') as jsonFile:
+            with open(cache_folder + '/cache.json', 'r') as jsonFile:
                 cache = json.loads(jsonFile.read())
         except Exception:
-            cache = json.loads({"sha": "0.0.1"})
+            cache = json.loads({"sha": "new_entry"})
 
         # Check if new commit
         if response['object']['sha'] != cache['sha']:
@@ -30,40 +29,40 @@ class repos():
             cache["sha"] = response['object']['sha']
 
             # Write new cache
-            with open(app_folder + '/cache.json', 'w') as jsonFile:
+            with open(cache_folder + '/cache.json', 'w') as jsonFile:
                 json.dump(cache, jsonFile, indent=2)
 
-            # Fetch the current version as semver object
-            new_version = semver.VersionInfo.parse(str(current_version))
-
             # Return new version number as version object
-            return parse(str(new_version.bump_patch()))
+            return True, cache["sha"]
         else:
-            return parse(current_version)
+            return False, cache["sha"]
 
     # Check for new releases on PyPi.org
     def pypi(repo_strings):
         # Set vars
-        version = parse('0')
+        version_name = parse('0')
+        new = False
 
         # Fetch latest commit
         response = requests.get(repo_strings['url'], timeout=10).json()
 
         # For each release in PyPi find the most recent
         for release in response['releases']:
-            if parse(release) > version and not parse(release).is_prerelease:
-                version = parse(release)
+            if parse(release) > version_name and not \
+                    parse(release).is_prerelease:
+                version_name = parse(release)
+                new = True
 
         # Return the most recent version
-        return version
+        return new, version_name
 
 
 def build(name):
-    print('Starting build for ' + name + '. This could take some time.')
+    print(f"Starting build for {name}. This could take some time.")
 
     # Set vars
-    cache_from = '/tmp/.buildx-cache/' + name
-    cache_to = '/tmp/.buildx-cache-new/' + name
+    cache_from = f"/tmp/.buildx-cache/{name}"
+    cache_to = f"/tmp/.buildx-cache-new/{name}"
 
     # Create required cache directories in case not there
     try:
@@ -80,18 +79,17 @@ def build(name):
     # Build Docker Command and Deploy
     docker_build_command = ('docker buildx build '
                             '--push '
-                            '--cache-from=type=local,src=' + cache_from +
-                            ' --cache-to=type=local,mode=max,dest=' +
-                            cache_to +
+                            f"--cache-from=type=local,src={cache_from} " +
+                            f"--cache-to=type=local,mode=max,dest={cache_to}" +
                             ' --platform '
                             'linux/amd64,'
                             'linux/arm64,'
                             'linux/arm/v7 '
-                            '--tag ghcr.io/learnersblock/' + name.lower() +
+                            f"--tag ghcr.io/learnersblock/{name.lower()}" +
                             ':latest '
-                            '--tag learnersblock/' + name.lower() +
+                            f"--tag learnersblock/{name.lower()}" +
                             ':latest '
-                            './apps/' + name.lower())
+                            f"./apps/{name.lower()}")
 
     output = subprocess.Popen(docker_build_command,
                               shell=True,
@@ -163,16 +161,18 @@ if __name__ == '__main__':
 
                 # Call function based on apps repo
                 if repo_call == 'gh_commits':
-                    latest_version = repos.gh_commits(json_data[app_json_file]
-                                                      ["repo"]
-                                                      ["strings"],
-                                                      json_data[app_json_file]
-                                                      ["version"],
-                                                      apps_path + file_path)
+                    new, version_name = repos.gh_commits(json_data
+                                                         [app_json_file]
+                                                         ["repo"]
+                                                         ["strings"],
+                                                         json_data
+                                                         [app_json_file]
+                                                         ["version"],
+                                                         apps_path + file_path)
                 elif repo_call == 'pypi':
-                    latest_version = repos.pypi(json_data[app_json_file]
-                                                ["repo"]
-                                                ["strings"])
+                    new, version_name = repos.pypi(json_data[app_json_file]
+                                                   ["repo"]
+                                                   ["strings"])
                 #                          #
                 # elif:                    #
                 # Add more repo types here #
@@ -182,14 +182,17 @@ if __name__ == '__main__':
                     raise ('Not a recognised repo')
 
                 # Check if it is a new version or a new entry
-                if latest_version > parse(json_data[app_json_file]["version"]):
+                if new is True:
                     # Build Docker image and deploy if it's an LB image
                     if (json_data[app_json_file]["image"][:21]
                             == 'ghcr.io/learnersblock'):
                         build(app_json_file)
 
-                    # Update app's JSON file with the new version
-                    json_data[app_json_file]["version"] = str(latest_version)
+                    # Update app's JSON with the new version
+                    json_data[app_json_file]["version_name"] = \
+                        str(version_name)
+                    json_data[app_json_file]["version"] = \
+                        int(json_data[app_json_file]["version"])+1
 
                     # Write the app's JSON file
                     with open(full_file_path, 'w') as jsonFile:
