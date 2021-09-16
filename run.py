@@ -12,7 +12,7 @@ apps_path = './apps/'
 # Repos for fetching latest version number
 class repos():
     # Check for new commits on a GitHub repo
-    def gh_commits(repo_strings, current_version, cache_folder):
+    def gh_commits(repo_strings, cache_folder):
         # Fetch release versions
         response = requests.get(repo_strings['url'], timeout=10).json()
 
@@ -21,7 +21,10 @@ class repos():
             with open(cache_folder + '/cache.json', 'r') as jsonFile:
                 cache = json.loads(jsonFile.read())
         except Exception:
-            cache = json.loads({"sha": "new_entry"})
+            with open(cache_folder + '/cache.json', 'w') as jsonFile:
+                json.dump({"sha": "new_entry"}, jsonFile, indent=2)
+
+            cache = {"sha": "new_entry"}
 
         # Check if new commit
         if response['object']['sha'] != cache['sha']:
@@ -33,9 +36,40 @@ class repos():
                 json.dump(cache, jsonFile, indent=2)
 
             # Return new version number as version object
-            return True, cache["sha"]
+            return True, cache["sha"][:7]
         else:
-            return False, cache["sha"]
+            return False, cache["sha"][:7]
+
+    # Check for new releases on a GitHub repo
+    def gh_release(repo_strings, cache_folder):
+        # Fetch release versions
+        response = requests.get(repo_strings['url'], timeout=10).json()
+
+        # Read release data
+        try:
+            with open(cache_folder + '/cache.json', 'r') as jsonFile:
+                cache = json.loads(jsonFile.read())
+        except Exception:
+            with open(cache_folder + '/cache.json', 'w') as jsonFile:
+                json.dump({"tag_name": "new_entry"}, jsonFile, indent=2)
+
+            cache = {"tag_name": "new_entry"}
+
+        # Check if new commit
+        if response['tag_name'] != cache['tag_name'] and \
+            response['prerelease'] is False and \
+                response['draft'] is False:
+            # Update and write new tag_name
+            cache["tag_name"] = response['tag_name']
+
+            # Write new cache
+            with open(cache_folder + '/cache.json', 'w') as jsonFile:
+                json.dump(cache, jsonFile, indent=2)
+
+            # Return new version number as version object
+            return True, cache["tag_name"]
+        else:
+            return False, cache["tag_name"]
 
     # Check for new releases on PyPi.org
     def pypi(repo_strings):
@@ -150,7 +184,9 @@ if __name__ == '__main__':
                     existing_entry = True
 
             # If it is not an existing entry, build it, then move on
-            if existing_entry is False:
+            if existing_entry is False and \
+                (json_data[app_json_file]["image"][:21]) \
+                    == 'ghcr.io/learnersblock':
                 build(app_json_file)
                 continue
 
@@ -165,9 +201,12 @@ if __name__ == '__main__':
                                                          [app_json_file]
                                                          ["repo"]
                                                          ["strings"],
-                                                         json_data
+                                                         apps_path + file_path)
+                elif repo_call == 'gh_release':
+                    new, version_name = repos.gh_release(json_data
                                                          [app_json_file]
-                                                         ["version"],
+                                                         ["repo"]
+                                                         ["strings"],
                                                          apps_path + file_path)
                 elif repo_call == 'pypi':
                     new, version_name = repos.pypi(json_data[app_json_file]

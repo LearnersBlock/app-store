@@ -1,0 +1,55 @@
+{
+  "bookstack": {
+    "long_name": "Bookstack",
+    "env_vars": {
+      "PUID": 1000,
+      "PGID": 1000,
+      "DB_HOST": "bookstack_db",
+      "DB_USER": "bookstack",
+      "DB_PASS": "q@wkejd0i2hd1",
+      "DB_DATABASE": "bookstackapp"
+    },
+    "image": "ghcr.io/linuxserver/bookstack",
+    "ports": {
+      "80": 6875
+    },
+    "volumes": {
+      "bookstack_config": {
+        "bind": "/config",
+        "mode": "rw"
+      }
+    },
+    "info": "Username: admin@admin.com\n\\nPassword: password",
+    "dependencies": {
+      "bookstack_db": {
+        "env_vars": {
+          "PUID": 1000,
+          "PGID": 1000,
+          "MYSQL_ROOT_PASSWORD": "q@wkejd0i2hd1",
+          "TZ": "Europe/London",
+          "MYSQL_DATABASE": "bookstackapp",
+          "MYSQL_USER": "bookstack",
+          "MYSQL_PASSWORD":  "q@wkejd0i2hd1"
+        },
+        "image": "ghcr.io/linuxserver/mariadb",
+        "ports": {},
+        "volumes": {
+          "bookstack_volume": {
+            "bind": "/config",
+            "mode": "rw"
+          }
+        }
+      }
+    },
+    "version_name": "0",
+    "version": 0,
+    "author_site": "bookstackapp.com",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/bookstack-logo.png",
+    "repo": {
+      "name": "gh_release",
+      "strings": {
+        "url": "https://api.github.com/repos/linuxserver/docker-bookstack/releases/latest"
+      }
+    }
+  }
+}
