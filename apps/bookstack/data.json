@@ -19,7 +19,7 @@
         "mode": "rw"
       }
     },
-    "info": "Username: admin@admin.com\n\\nPassword: password",
+    "info": "Username: 'admin@admin.com', Password: 'password'",
     "dependencies": {
       "bookstack_db": {
         "env_vars": {
@@ -42,9 +42,9 @@
       }
     },
     "version_name": "v21.08.3-ls158",
-    "version": 1,
+    "version": 0,
     "author_site": "bookstackapp.com",
-    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/bookstack-logo.png",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
     "repo": {
       "name": "gh_release",
       "strings": {

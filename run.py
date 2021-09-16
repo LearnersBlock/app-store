@@ -59,17 +59,15 @@ class repos():
         if response['tag_name'] != cache['tag_name'] and \
             response['prerelease'] is False and \
                 response['draft'] is False:
-            # Update and write new tag_name
-            cache["tag_name"] = response['tag_name']
 
             # Write new cache
             with open(cache_folder + '/cache.json', 'w') as jsonFile:
                 json.dump(cache, jsonFile, indent=2)
 
             # Return new version number as version object
-            return True, cache["tag_name"]
+            return True, response['tag_name']
         else:
-            return False, cache["tag_name"]
+            return False, response['tag_name']
 
     # Check for new releases on PyPi.org
     def pypi(repo_strings):
