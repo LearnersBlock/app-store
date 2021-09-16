@@ -8,7 +8,8 @@
     },
     "volumes": {},
     "dependencies": {},
-    "version": "0.0.2",
+    "version_name": "0.0.2",
+    "version": "1",
     "author_site": "freemathapp.org",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/free-math/assets/free-math-logo.png",
     "repo": {
@@ -32,7 +33,8 @@
       }
     },
     "dependencies": {},
-    "version": "0.14.7",
+    "version_name": "0.14.7",
+    "version": 1,
     "author_site": "learningequality.org/kolibri/",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
     "repo": {
