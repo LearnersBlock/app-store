@@ -29,7 +29,7 @@
           "TZ": "Europe/London",
           "MYSQL_DATABASE": "bookstackapp",
           "MYSQL_USER": "bookstack",
-          "MYSQL_PASSWORD":  "q@wkejd0i2hd1"
+          "MYSQL_PASSWORD": "q@wkejd0i2hd1"
         },
         "image": "ghcr.io/linuxserver/mariadb",
         "ports": {},
@@ -41,8 +41,8 @@
         }
       }
     },
-    "version_name": "0",
-    "version": 0,
+    "version_name": "v21.08.3-ls158",
+    "version": 1,
     "author_site": "bookstackapp.com",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/bookstack-logo.png",
     "repo": {
