@@ -42,8 +42,8 @@
         }
       }
     },
-    "version_name": "v21.08.3-ls158",
-    "version": 0,
+    "version_name": "v21.08.3-ls159",
+    "version": 1,
     "author_site": "bookstackapp.com",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
     "repo": {
@@ -90,7 +90,7 @@
     "info": "",
     "dependencies": {},
     "version_name": "0.14.7",
-    "version": 3,
+    "version": 4,
     "author_site": "learningequality.org/kolibri/",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
     "repo": {
