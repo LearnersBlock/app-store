@@ -62,7 +62,9 @@ class repos():
 
             # Write new cache
             with open(cache_folder + '/cache.json', 'w') as jsonFile:
-                json.dump(cache, jsonFile, indent=2)
+                json.dump({"tag_name": response['tag_name']},
+                          jsonFile,
+                          indent=2)
 
             # Return new version number as version object
             return True, response['tag_name']
