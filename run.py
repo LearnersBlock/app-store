@@ -70,7 +70,7 @@ class repos():
             return False, response['tag_name']
 
     # Check for new releases on PyPi.org
-    def pypi(repo_strings):
+    def pypi(repo_strings, current_version):
         # Set vars
         version_name = parse('0')
         new = False
@@ -83,7 +83,9 @@ class repos():
             if parse(release) > version_name and not \
                     parse(release).is_prerelease:
                 version_name = parse(release)
-                new = True
+
+        if version_name > parse(current_version):
+            new = True
 
         # Return the most recent version
         return new, version_name
@@ -209,7 +211,10 @@ if __name__ == '__main__':
                 elif repo_call == 'pypi':
                     new, version_name = repos.pypi(json_data[app_json_file]
                                                    ["repo"]
-                                                   ["strings"])
+                                                   ["strings"],
+                                                   json_data
+                                                   [app_json_file]
+                                                   ["version_name"])
                 #                          #
                 # elif:                    #
                 # Add more repo types here #
