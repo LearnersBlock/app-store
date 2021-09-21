@@ -4,7 +4,7 @@
 
 This repository provides the Docker images used for the [Learner's Block](https://learnersblock.org) App Store.
 
-Ports 80, 9000 and 9090 are used by the Learner's Block operating system and cannot be used for applications. 
+Ports 80, 8000, 8080, 9000 and 9090 are used by the Learner's Block operating system and cannot be used for applications. 
 
 ## Feature requests
 
