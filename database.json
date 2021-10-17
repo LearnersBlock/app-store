@@ -1,1 +1,103 @@
-{}
+{
+  "bookstack": {
+    "long_name": "Bookstack",
+    "env_vars": {
+      "PUID": 1000,
+      "PGID": 1000,
+      "APP_URL": "http://lb.local:6875",
+      "DB_HOST": "bookstack_db",
+      "DB_USER": "bookstack",
+      "DB_PASS": "q@wkejd0i2hd1",
+      "DB_DATABASE": "bookstackapp"
+    },
+    "image": "ghcr.io/linuxserver/bookstack",
+    "ports": {
+      "80": 6875
+    },
+    "volumes": {
+      "bookstack_config": {
+        "bind": "/config",
+        "mode": "rw"
+      }
+    },
+    "info": "Username: 'admin@admin.com', Password: 'password'",
+    "dependencies": {
+      "bookstack_db": {
+        "env_vars": {
+          "PUID": 1000,
+          "PGID": 1000,
+          "MYSQL_ROOT_PASSWORD": "q@wkejd0i2hd1",
+          "TZ": "Europe/London",
+          "MYSQL_DATABASE": "bookstackapp",
+          "MYSQL_USER": "bookstack",
+          "MYSQL_PASSWORD": "q@wkejd0i2hd1"
+        },
+        "image": "ghcr.io/linuxserver/mariadb",
+        "ports": {},
+        "volumes": {
+          "bookstack_volume": {
+            "bind": "/config",
+            "mode": "rw"
+          }
+        }
+      }
+    },
+    "version_name": "v21.08.6-ls164",
+    "version": 7,
+    "author_site": "bookstackapp.com",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
+    "repo": {
+      "name": "gh_release",
+      "strings": {
+        "url": "https://api.github.com/repos/linuxserver/docker-bookstack/releases/latest"
+      }
+    }
+  },
+  "free-math": {
+    "long_name": "Free-Math",
+    "env_vars": {},
+    "image": "ghcr.io/learnersblock/free-math:latest",
+    "ports": {
+      "80": 1313
+    },
+    "volumes": {},
+    "info": "",
+    "dependencies": {},
+    "version_name": "b99beb7",
+    "version": 1,
+    "author_site": "freemathapp.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/free-math/assets/free-math-logo.png",
+    "repo": {
+      "name": "gh_commits",
+      "strings": {
+        "url": "https://api.github.com/repos/jaltekruse/free-math/git/refs/heads/master"
+      }
+    }
+  },
+  "kolibri": {
+    "long_name": "Kolibri",
+    "env_vars": {},
+    "image": "ghcr.io/learnersblock/kolibri:latest",
+    "ports": {
+      "8080": 1212
+    },
+    "volumes": {
+      "kolibri_home": {
+        "bind": "/root/.kolibri",
+        "mode": "rw"
+      }
+    },
+    "info": "",
+    "dependencies": {},
+    "version_name": "0.14.7",
+    "version": 0,
+    "author_site": "learningequality.org/kolibri/",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
+    "repo": {
+      "name": "pypi",
+      "strings": {
+        "url": "https://pypi.org/pypi/kolibri/json"
+      }
+    }
+  }
+}
