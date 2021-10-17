@@ -1,4 +1,4 @@
-FROM node:14.17.0 as node-build-step
+FROM node:14.17.6 as node-build-step
 
 RUN apt-get update && apt-get install \
     git \
@@ -21,6 +21,6 @@ RUN npm install
 RUN npm run build
 
 
-FROM nginx:alpine
+FROM nginx:1.21.3-alpine
 
 COPY --from=node-build-step /Free-Math/build /usr/share/nginx/html
