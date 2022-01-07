@@ -42,8 +42,8 @@
         }
       }
     },
-    "version_name": "v21.12-ls174",
-    "version": 22,
+    "version_name": "v21.12.1-ls174",
+    "version": 23,
     "author_site": "bookstackapp.com",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
     "repo": {
