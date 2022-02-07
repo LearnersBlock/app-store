@@ -2,7 +2,7 @@
 
 ## Description
 
-This repository provides the Docker images used for the [Learner's Block](https://learnersblock.org) App Store.
+This repository provides the Docker images and databases used for the [Learner's Block](https://learnersblock.org) App Store.
 
 Ports 80, 8000, 8080, 9000 and 9090 are used by the Learner's Block operating system and cannot be used for applications. 
 
@@ -28,14 +28,3 @@ As with all community projects, we do incur costs. You can see everything we hav
 ## License
 
 Learner’s Block is released under the [GPL-3.0 License](https://github.com/LearnersBlock/learners-block/blob/main/LICENSE)
-
-## Attribution
-
-Many great open-source projects provide the foundation to make this possible, and we would like to thank and recognise them all:
-
-* [Balena](https://www.balena.io/)
-* [IFM](https://github.com/misterunknown/ifm/)
-* [GitBook](http://gitbook.com)
-* [Weblate](https://weblate.org)
-* [Feature UpVote](https://featureupvote.com/)
-* [Strapi](https://strapi.io)
