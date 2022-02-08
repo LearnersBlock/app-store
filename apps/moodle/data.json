@@ -1,6 +1,7 @@
 {
   "moodle": {
     "long_name": "Moodle",
+    "env_vars": {},
     "image": "ghcr.io/learnersblock/moodle:latest",
     "ports": {
       "8080": 8442
