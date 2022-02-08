@@ -1,0 +1,27 @@
+version: '2.1'
+
+services:
+  moodle-mariadb:
+    restart: always
+    environment:
+      MARIADB_DATABASE: moodledb
+      MARIADB_USER: moodleuser
+      MARIADB_PASSWORD: c0LVADhQh55u-KO[YaOYZDk:oOINM&
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+    volumes:
+      - moodle_mariadb:/var/lib/mysql
+    image: mariadb:10.5
+
+  moodle:
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "80:8080"
+    volumes:
+      - moodle_data:/app/moodledata
+
+volumes:
+  moodle_mariadb:
+  moodle_data:

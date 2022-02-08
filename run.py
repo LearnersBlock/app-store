@@ -1,16 +1,26 @@
-from packaging.version import parse
-from time import sleep
 import json
 import os
 import requests
 import shutil
 import subprocess
+from datetime import datetime
+from packaging.version import parse
+from time import sleep
 
 apps_path = './apps/'
 
 
 # Repos for fetching latest version number
 class repos():
+    # Run at a set interval
+    def cron(repo_strings):
+        if datetime.today().weekday() == repo_strings['dow']:
+            # Fetch release versions
+            response = requests.get(repo_strings['url'], timeout=10).json()
+            return True, response['object']['sha'][:7]
+        else:
+            return False, False
+
     # Check for new commits on a GitHub repo
     def gh_commits(repo_strings, cache_folder):
         # Fetch release versions
@@ -197,7 +207,13 @@ if __name__ == '__main__':
                 repo_call = json_data[app_json_file]["repo"]["name"].lower()
 
                 # Call function based on apps repo
-                if repo_call == 'gh_commits':
+                if repo_call == 'cron':
+                    new, version_name = repos.cron(json_data
+                                                   [app_json_file]
+                                                   ["repo"]
+                                                   ["strings"])
+
+                elif repo_call == 'gh_commits':
                     new, version_name = repos.gh_commits(json_data
                                                          [app_json_file]
                                                          ["repo"]

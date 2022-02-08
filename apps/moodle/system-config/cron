@@ -1,0 +1,1 @@
+* * * * * /usr/local/bin/php /var/www/html/moodle/admin/cli/cron.php >/dev/null
