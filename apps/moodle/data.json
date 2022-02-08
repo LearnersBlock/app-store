@@ -39,7 +39,7 @@
       "name": "cron",
       "strings": {
         "url": "https://api.github.com/repos/moodle/moodle/git/refs/heads/MOODLE_311_STABLE",
-        "dow": "1"
+        "dow": "6"
       }
     }
   }
