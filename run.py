@@ -14,11 +14,13 @@ apps_path = './apps/'
 class repos():
     # Run at a set interval
     def cron(repo_strings):
-        if datetime.today().weekday() != repo_strings['dow']:
+        if datetime.today().weekday() == repo_strings['dow']:
+            print('Running cronjob.')
             # Fetch release versions
             response = requests.get(repo_strings['url'], timeout=10).json()
             return True, response['object']['sha'][:7]
         else:
+            print('Wrong day for cronjob.')
             return False, False
 
     # Check for new commits on a GitHub repo
