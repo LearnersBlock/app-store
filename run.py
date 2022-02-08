@@ -20,7 +20,9 @@ class repos():
             response = requests.get(repo_strings['url'], timeout=10).json()
             return True, response['object']['sha'][:7]
         else:
-            print('Wrong day for cronjob.')
+            print(f"Wrong day for cronjob. This is day "
+                  f"{datetime.today().weekday()}"
+                  f" not day {repo_strings['dow']}")
             return False, False
 
     # Check for new commits on a GitHub repo
