@@ -21,8 +21,8 @@ class repos():
             return True, response['object']['sha'][:7]
         else:
             print(f"Wrong day for cronjob. This is day "
-                  f"{datetime.today().weekday()}"
-                  f" not day {repo_strings['dow']}")
+                  f"{datetime.today().weekday()} "
+                  f"not day {repo_strings['dow']}")
             return False, False
 
     # Check for new commits on a GitHub repo
