@@ -14,7 +14,7 @@ apps_path = './apps/'
 class repos():
     # Run at a set interval
     def cron(repo_strings):
-        if str(datetime.today().weekday()) == str(repo_strings['dow']):
+        if str(datetime.today().weekday()) != str(repo_strings['dow']):
             print('Running cronjob.')
             # Fetch release versions
             response = requests.get(repo_strings['url'], timeout=10).json()

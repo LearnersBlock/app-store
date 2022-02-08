@@ -133,7 +133,7 @@ $CFG->dboptions = array(
 // http://docs.moodle.org/en/masquerading
 
 $DEVICE_HOSTNAME = getenv('DEVICE_HOSTNAME');
-$CFG->wwwroot   = "http://{$DEVICE_HOSTNAME}.local/moodle";
+$CFG->wwwroot   = "http://{$DEVICE_HOSTNAME}.local:8442";
 
 
 //=========================================================================
