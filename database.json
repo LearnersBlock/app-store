@@ -98,5 +98,48 @@
         "url": "https://pypi.org/pypi/kolibri/json"
       }
     }
+  },
+  "moodle": {
+    "long_name": "Moodle",
+    "image": "ghcr.io/learnersblock/moodle:latest",
+    "ports": {
+      "8080": 8442
+    },
+    "volumes": {
+      "moodle_data": {
+        "bind": "/app/moodledata",
+        "mode": "rw"
+      }
+    },
+    "info": "",
+    "dependencies": {
+      "moodle-mariadb": {
+        "env_vars": {
+          "MARIADB_DATABASE": "moodledb",
+          "MARIADB_USER": "moodleuser",
+          "MARIADB_PASSWORD": "c0LVADhQh55u-KO[YaOYZDk:oOINM&",
+          "MARIADB_RANDOM_ROOT_PASSWORD": "true"
+        },
+        "image": "mariadb:10.5",
+        "ports": {},
+        "volumes": {
+          "moodle_mariadb": {
+            "bind": "/var/lib/mysql",
+            "mode": "rw"
+          }
+        }
+      }
+    },
+    "version_name": "3.11.2",
+    "version": 0,
+    "author_site": "https://moodle.org",
+    "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/moodle/assets/moodle-logo.png",
+    "repo": {
+      "name": "cron",
+      "strings": {
+        "url": "https://api.github.com/repos/moodle/moodle/git/refs/heads/MOODLE_311_STABLE",
+        "dow": "1"
+      }
+    }
   }
 }
