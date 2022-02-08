@@ -106,6 +106,7 @@ def build(name):
     except Exception:
         # cache_from folder already exists. Continuing.
         pass
+
     try:
         os.makedirs(cache_to)
     except Exception:
@@ -122,8 +123,6 @@ def build(name):
                             'linux/arm64,'
                             'linux/arm/v7 '
                             f"--tag ghcr.io/learnersblock/{name.lower()}" +
-                            ':latest '
-                            f"--tag learnersblock/{name.lower()}" +
                             ':latest '
                             f"./apps/{name.lower()}")
 
