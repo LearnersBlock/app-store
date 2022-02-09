@@ -13,12 +13,34 @@ apps_path = './apps/'
 # Repos for fetching latest version number
 class repos():
     # Run at a set interval
-    def cron(repo_strings):
-        if str(datetime.today().weekday()) == str(repo_strings['dow']):
+    def cron(repo_strings, cache_folder):
+        if str(datetime.today().weekday()) != str(repo_strings['dow']):
             print('Running cronjob.')
+
             # Fetch release versions
             response = requests.get(repo_strings['url'], timeout=10).json()
-            return True, response['object']['sha'][:7]
+
+            # Read cached sha
+            try:
+                with open(cache_folder + '/cache.json', 'r') as jsonFile:
+                    cache = json.loads(jsonFile.read())
+            except Exception:
+                with open(cache_folder + '/cache.json', 'w') as jsonFile:
+                    json.dump({"sha": "new_entry"}, jsonFile, indent=2)
+                cache = {"sha": "new_entry"}
+
+            # Check if new commit
+            if response['object']['sha'] != cache['sha']:
+                # Update and write new sha
+                cache["sha"] = response['object']['sha']
+
+                # Write new cache
+                with open(cache_folder + '/cache.json', 'w') as jsonFile:
+                    json.dump(cache, jsonFile, indent=2)
+
+                return True, response['object']['sha'][:7]
+            else:
+                return False, response['object']['sha'][:7]
         else:
             print(f"Wrong day for cronjob. This is day "
                   f"{datetime.today().weekday()} "
@@ -37,7 +59,6 @@ class repos():
         except Exception:
             with open(cache_folder + '/cache.json', 'w') as jsonFile:
                 json.dump({"sha": "new_entry"}, jsonFile, indent=2)
-
             cache = {"sha": "new_entry"}
 
         # Check if new commit
@@ -215,7 +236,8 @@ if __name__ == '__main__':
                     new, version_name = repos.cron(json_data
                                                    [app_json_file]
                                                    ["repo"]
-                                                   ["strings"])
+                                                   ["strings"],
+                                                   apps_path + file_path)
 
                 elif repo_call == 'gh_commits':
                     new, version_name = repos.gh_commits(json_data
