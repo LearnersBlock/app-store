@@ -22,7 +22,7 @@ RUN install-php-extensions \
     zip
 
 # Clears Docker cache when new commits are pushed
-ADD https://api.github.com/repos/moodle/moodle/git/refs/heads/MOODLE_311_STABLE version.json
+ADD https://api.github.com/repos/moodle/moodle/git/refs/heads/$MOODLE_BRANCH version.json
 
 RUN git clone git://git.moodle.org/moodle.git -b $MOODLE_BRANCH --depth 1 --single-branch /var/www/html/moodle
 
