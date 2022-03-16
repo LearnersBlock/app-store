@@ -1,4 +1,4 @@
-FROM node:14.17.6 as node-build-step
+FROM node:16.13.2 as node-build-step
 
 RUN apt-get update && apt-get install \
     git \
