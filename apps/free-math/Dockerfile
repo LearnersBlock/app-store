@@ -1,4 +1,4 @@
-FROM node:16.13.2 as node-build-step
+FROM node:14.17.6 as node-build-step
 
 RUN apt-get update && apt-get install \
     git \
@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install \
     libjpeg-dev \
     libgif-dev \
     librsvg2-dev -y
+
+RUN npm install -g npm@8.7.0
 
 # Clears Docker cache when new commit is pushed
 ADD https://api.github.com/repos/jaltekruse/free-math/git/refs/heads/master version.json
