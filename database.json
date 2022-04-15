@@ -41,8 +41,8 @@
         }
       }
     },
-    "version_name": "v21.12.5-ls1",
-    "version": 33,
+    "version_name": "v22.03.1-ls11",
+    "version": 34,
     "author_site": "bookstackapp.com",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
     "repo": {
@@ -62,8 +62,8 @@
     "volumes": {},
     "info": "",
     "dependencies": {},
-    "version_name": "8f7ac8d",
-    "version": 13,
+    "version_name": "a55e884",
+    "version": 14,
     "author_site": "freemathapp.org",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/free-math/assets/free-math-logo.png",
     "repo": {
