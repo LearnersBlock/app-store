@@ -41,8 +41,8 @@
         }
       }
     },
-    "version_name": "v22.06-ls23",
-    "version": 48,
+    "version_name": "v22.06.1-ls23",
+    "version": 49,
     "author_site": "bookstackapp.com",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
     "repo": {
@@ -131,8 +131,8 @@
         }
       }
     },
-    "version_name": "8303206",
-    "version": 17,
+    "version_name": "1f6ab2b",
+    "version": 18,
     "author_site": "moodle.org",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/moodle/assets/moodle-logo.png",
     "repo": {
