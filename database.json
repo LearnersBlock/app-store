@@ -41,8 +41,8 @@
         }
       }
     },
-    "version_name": "v22.10.2-ls50",
-    "version": 78,
+    "version_name": "v22.11-ls51",
+    "version": 79,
     "author_site": "bookstackapp.com",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/bookstack/assets/bookstack-logo.png",
     "repo": {
@@ -88,8 +88,8 @@
     },
     "info": "",
     "dependencies": {},
-    "version_name": "0.15.8",
-    "version": 9,
+    "version_name": "0.15.9",
+    "version": 10,
     "author_site": "learningequality.org/kolibri/",
     "logo": "https://raw.githubusercontent.com/LearnersBlock/app-store/main/apps/kolibri/assets/kolibri-logo.png",
     "repo": {
