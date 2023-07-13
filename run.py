@@ -156,7 +156,6 @@ def build(name):
                             ' --platform '
                             'linux/amd64,'
                             'linux/arm64,'
-                            'linux/arm/v7 '
                             f"--tag ghcr.io/learnersblock/{name.lower()}" +
                             ':latest '
                             f"./apps/{name.lower()}")
