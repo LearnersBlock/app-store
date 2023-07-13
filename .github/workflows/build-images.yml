@@ -9,6 +9,8 @@ on:
 
 jobs:
   build-images:
+    concurrency:
+      group: ${{ github.ref }}
     runs-on: ubuntu-latest
     steps:
       -
@@ -43,10 +45,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
             python-version: '3.8'
-      - name: Turnstyle
-        uses: softprops/turnstyle@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Build Script
         run: |
           pip install -r requirements.txt

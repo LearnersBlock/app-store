@@ -155,7 +155,7 @@ def build(name):
                             f"--cache-to=type=local,mode=max,dest={cache_to}" +
                             ' --platform '
                             'linux/amd64,'
-                            'linux/arm64,'
+                            'linux/arm64 '
                             f"--tag ghcr.io/learnersblock/{name.lower()}" +
                             ':latest '
                             f"./apps/{name.lower()}")
